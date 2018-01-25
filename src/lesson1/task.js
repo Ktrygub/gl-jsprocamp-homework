@@ -156,6 +156,29 @@ function without(arrA, arrB) {
   return arrA.filter(el => !arrB.includes(el));
 }
 
+/*
+  Напишите функцию, которая принимает строку,
+  содержащую выражение математической операции с двумя
+  операндами (поддерживаются 4 базовых оператора + - / *).
+  Функция вычисляет выражение и возвращает число либо NaN.
+  '12/6' => 2
+*/
+function calcExpression(expression) {
+
+}
+
+/*
+  Напишите функцию, которая принимает строку,
+  содержащую выражение логической операции с двумя
+  операндами (поддерживаются 3 базовых оператора > < =).
+  Функция вычисляет выражение и возвращает true / false,
+  либо бросает exception в случае ошибки.
+  '100>5' => true
+*/
+function calcComparison(expression) {
+
+}
+
 export default {
   getDataType,
   getDataTypePseudoName,
@@ -170,4 +193,6 @@ export default {
   order,
   removeNegative,
   without,
+  calcExpression,
+  calcComparison
 };
