@@ -251,7 +251,7 @@ function calcExpression(expression) {
 /*
   Напишите функцию, которая принимает строку,
   содержащую выражение логической операции с двумя
-  операндами (поддерживаются 3 базовых оператора > < =).
+  операндами (поддерживаются 5 базовых операторов > < = >= <=).
   Функция вычисляет выражение и возвращает true / false,
   либо бросает exception в случае ошибки.
   '100>5' => true
@@ -303,6 +303,18 @@ function calcComparison(expression) {
   return doLogic(x, y, operation);
 }
 
+/*
+  Напишите функцию, которая принимает обьект и строку,
+  содержащую выражение доступа к свойствам обьекта.
+  Функция возвращает значение запрашиваемого свойства либо
+  бросает exception в случае ошибки.
+  { a: { x: 2 }, b: 5 }, '.a.x' => 2
+  { a: 1, b: 2 }, '.c' => exception
+*/
+function evalKey(obj, expression) {
+
+}
+
 export default {
   getDataType,
   getDataTypePseudoName,
@@ -319,4 +331,5 @@ export default {
   without,
   calcExpression,
   calcComparison,
+  evalKey
 };
