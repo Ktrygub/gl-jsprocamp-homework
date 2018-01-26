@@ -164,7 +164,11 @@ function without(arrA, arrB) {
   '12/6' => 2
 */
 function calcExpression(expression) {
-
+  try {
+    return eval(expression);
+  } catch (error) {
+    return NaN;
+  }
 }
 
 /*
@@ -176,7 +180,12 @@ function calcExpression(expression) {
   '100>5' => true
 */
 function calcComparison(expression) {
-
+  const expr = expression.replace('=', '===');
+  try {
+    return eval(expr);
+  } catch (e) {
+    throw new Error(e);
+  }
 }
 
 export default {
@@ -194,5 +203,5 @@ export default {
   removeNegative,
   without,
   calcExpression,
-  calcComparison
+  calcComparison,
 };
