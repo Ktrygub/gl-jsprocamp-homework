@@ -164,11 +164,88 @@ function without(arrA, arrB) {
   '12/6' => 2
 */
 function calcExpression(expression) {
-  try {
-    return eval(expression);
-  } catch (error) {
+  // with eval
+
+  // try {
+  //   return eval(expression);
+  // } catch (error) {
+  //   return NaN;
+  // }
+
+  // without eval, 2 operands
+
+  const filterFloat = value => {
+    if (/^(-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/.test(value)) {
+      return Number(value);
+    }
+    return NaN;
+  };
+
+  const operandsArray = expression.split(/(?!-)(?!^-)[+*/-]/).map(el => filterFloat(el.trim()));
+
+  if (operandsArray.includes(NaN)) {
     return NaN;
   }
+
+  const [x, y] = operandsArray;
+
+  const operation = expression.match(/[/*+]|(?!^-)[-]/)[0];
+
+  const doMath = (x, y, operation) => {
+    switch (operation) {
+      case '+':
+        return x + y;
+
+      case '-':
+        return x - y;
+
+      case '*':
+        return x * y;
+
+      case '/':
+        return x / y;
+
+      default:
+        return 0;
+    }
+  };
+
+  const result = doMath(x, y, operation);
+
+  return parseFloat(result.toPrecision(12));
+
+  // without eval, any ammount of operands
+  // check that expression is notEmpty String, otherwise return undefined
+  // if (typeof expression !== 'string' || expression === '') {
+  //   throw new Error('Invalid expression');
+  // }
+
+  // const parser = expression => {
+  //   const filterFloat = value => {
+  //     if (/^(-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/.test(value)) {
+  //       return Number(value);
+  //     }
+  //     return NaN;
+  //   };
+
+  //   const operandsArray = expression.split(/[+*/-]/).map(el => filterFloat(el.trim()));
+
+  //   if (operandsArray.includes(NaN)) {
+  //     return NaN;
+  //   }
+
+  //   const operationsArray = expression.match(/[+*/-]/g);
+  
+  // /[+*/-]/g
+  // /(?!^-)(?!/-)[+*/-]/g
+  // /(?!^-)(?<!\/)[+*/-]/
+
+  //   const resultArray = { operandsArray, operationsArray };
+
+  //   return resultArray;
+  // };
+
+  // return parser(expression);
 }
 
 /*
@@ -180,12 +257,50 @@ function calcExpression(expression) {
   '100>5' => true
 */
 function calcComparison(expression) {
-  const expr = expression.replace('=', '===');
+  // with eval
+  // const expr = expression.replace('=', '===');
+  // try {
+  //   return eval(expr);
+  // } catch (e) {
+  //   throw new Error(e);
+  // }
+
+  // without eval
+  const filterFloat = value => {
+    if (/^(-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/.test(value)) {
+      return Number(value);
+    }
+    throw new Error('Invalid argument');
+  };
+
+  let operandsArray = [];
   try {
-    return eval(expr);
+    operandsArray = expression.split(/[><=]/).map(el => filterFloat(el.trim()));
   } catch (e) {
-    throw new Error(e);
+    throw e;
   }
+
+  const [x, y] = operandsArray;
+
+  const operation = expression.match(/[><=]/)[0];
+
+  const doLogic = (x, y, operation) => {
+    switch (operation) {
+      case '>':
+        return x > y;
+
+      case '<':
+        return x < y;
+
+      case '=':
+        return x === y;
+
+      default:
+        return null;
+    }
+  };
+
+  return doLogic(x, y, operation);
 }
 
 export default {
