@@ -4,12 +4,9 @@
 
 //------------------------------------------------------------------------------------------
 // sum(0.1, 0.2) === 0.3
-// Throws 'Invalid parameters' if any of the arguments is not a primitive number type
-// Throws if calls without arguments or with one argument, f.e. sum(), sum(22)
-// questionable behaviour: sum('2',2) -> error, but Math.pow('2',2) -> 4
 //------------------------------------------------------------------------------------------
 
-function sum(a, b) {
+function sum(a = 0, b = 0) {
   if (typeof a !== 'number' || typeof b !== 'number') {
     throw new TypeError('Invalid argument type');
   }
@@ -23,16 +20,10 @@ function sum(a, b) {
 
 //------------------------------------------------------------------------------------------
 // sumAll(0.1, 0.2, 0.3) === 0.6
-// Throws 'Invalid parameters' Error if any of the arguments is not a primitive number type
-// sumAll() === 0 - returns 0 when calls without params
 //------------------------------------------------------------------------------------------
 
 function sumAll(...rest) {
   const args = [...rest];
-
-  if (args.length === 0) {
-    return 0;
-  }
 
   args.forEach(el => {
     if (typeof el !== 'number') {
@@ -40,7 +31,7 @@ function sumAll(...rest) {
     }
   });
 
-  const result = args.reduce((sum, el) => sum + el);
+  const result = args.reduce((sum, el) => sum + el, 0);
 
   return parseFloat(result.toFixed(12));
 }
@@ -48,11 +39,6 @@ function sumAll(...rest) {
 /*
   Напишите функцию, которая возвращает число x в степень n
 */
-
-//------------------------------------------------------------------------------------------
-// type coercion to number
-// ** experimental api, part of the ECMAScript 2016 (ES7) proposal, some browsers compatibility issues
-//------------------------------------------------------------------------------------------
 
 function pow(x, n) {
   if (typeof x !== 'number' || typeof n !== 'number') {
@@ -67,7 +53,7 @@ function pow(x, n) {
 
 //------------------------------------------------------------------------------------------
 // random(0, 2) should behave same as random(2, 0)
-// random(-0.8, 2.7) should'n ever returns -1 or 3
+// random(-0.8, 2.7) should returns between [0, 2]
 // Throws 'Invalid parameters' Error if from/to is not a finite number
 // Throws if length of [from, to] interval is greater than Number.MAX_VALUE
 //------------------------------------------------------------------------------------------
