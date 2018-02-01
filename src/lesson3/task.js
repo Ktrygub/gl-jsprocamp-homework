@@ -1,19 +1,18 @@
 /*
-  Write a function, that has 2 required parameters, and any amount of optional parameters. 
+  Write a function, that has 2 required parameters, and any amount of optional parameters.
   Function should return a number - amount of optional parameters that were passed into function.
   Hint: you are allowed to modify both function definition and function body.
 */
-export function countOptional() {
-
+export function countOptional(arg1, arg2, ...rest) {
+  return rest.length;
 }
 
 /*
   Write your implementation of native Function.prototype.bind method
 */
-export function bindContext(fn, context) {
-
+export function bindContext(fn, context, ...partialArgs) {
+  return (...args) => fn.apply(context, [...partialArgs, ...args]);
 }
-
 
 /*
   Write function that accepts 1 parameter - object. It should add to this object a log interface so as:
@@ -29,24 +28,38 @@ export function bindContext(fn, context) {
 
   Take to account, that you should track log call index starting from 1
 */
-export function addLogCapability(object) {
+// export function addLogCapability(object) {
+//   addLogCapability.id = addLogCapability.id || 0;
+//   object.log = () => {
+//     addLogCapability.id += 1;
+//     return `Log message #${addLogCapability.id}: ${
+//       object.name ? `my name is ${object.name}` : 'I dont have name'
+//     }`;
+//   };
+// }
 
+export function addLogCapability(object) {
+  let counter = 0;
+  object.log = () => {
+    counter += 1;
+    return `Log message #${counter}: ${object.name ? `my name is ${object.name}` : 'I dont have name'}`;
+  };
 }
 
 /*
   Write a function that creates custom topic logger:
   myLogger = logger('My Topic')
-  myLogger('first message'); //=> My Topic: first message
+  myLogger('first message'); //=> My Topic  : first message
 */
 export function logger(topic) {
-
+  return message => `${topic}: ${message}`;
 }
 
 /*
   Implement left to right compose function
 */
-export function compose() {
-
+export function compose(...functions) {
+  return data => functions.reduce((value, func) => func(value), data);
 }
 
 /*
@@ -60,7 +73,7 @@ export function compose() {
   sumWith4(5) // 9
 */
 export function partial(fn) {
-
+  return (...partialArgs) => (...args) => fn(...partialArgs, ...args);
 }
 
 export default {
@@ -69,5 +82,5 @@ export default {
   addLogCapability,
   logger,
   compose,
-  partial
+  partial,
 };
