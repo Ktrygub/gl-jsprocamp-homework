@@ -29,10 +29,10 @@ export function bindContext(fn, context, ...partialArgs) {
   Take to account, that you should track log call index starting from 1
 */
 // export function addLogCapability(object) {
-//   addLogCapability.id = addLogCapability.id || 0;
+//   addLogCapability.counter = addLogCapability.counter || 0;
 //   object.log = () => {
-//     addLogCapability.id += 1;
-//     return `Log message #${addLogCapability.id}: ${
+//     addLogCapability.counter += 1;
+//     return `Log message #${addLogCapability.counter}: ${
 //       object.name ? `my name is ${object.name}` : 'I dont have name'
 //     }`;
 //   };

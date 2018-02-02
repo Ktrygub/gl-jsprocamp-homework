@@ -63,9 +63,12 @@ function random(frm, to) {
     throw new Error('Interval should have finite length');
   }
 
-  const min = Math.trunc(Math.min(frm, to));
-  const max = Math.trunc(Math.max(frm, to));
+  const min = Math.ceil(Math.min(frm, to));
+  const max = Math.floor(Math.max(frm, to));
 
+  if (max - min < 0) {
+    throw new Error('There is no integer values inside interval');
+  }
   if (max - min > Number.MAX_VALUE) {
     throw new Error('Length of [from, to] interval could not be greater than Number.MAX_VALUE');
   }
