@@ -8,7 +8,7 @@
 
 function sum(a = 0, b = 0) {
   if (typeof a !== 'number' || typeof b !== 'number') {
-    throw new TypeError('Invalid argument type');
+    throw new TypeError('Invalid argument type. Number argument expected');
   }
 
   return parseFloat((a + b).toFixed(12));
@@ -23,15 +23,13 @@ function sum(a = 0, b = 0) {
 //------------------------------------------------------------------------------------------
 
 function sumAll(...rest) {
-  const args = [...rest];
-
-  args.forEach(el => {
+  rest.forEach(el => {
     if (typeof el !== 'number') {
-      throw new TypeError('Invalid argument type');
+      throw new TypeError('Invalid argument type. Number argument expected');
     }
   });
 
-  const result = args.reduce((sum, el) => sum + el, 0);
+  const result = rest.reduce((sum, el) => sum + el, 0);
 
   return parseFloat(result.toFixed(12));
 }
@@ -42,7 +40,7 @@ function sumAll(...rest) {
 
 function pow(x, n) {
   if (typeof x !== 'number' || typeof n !== 'number') {
-    throw new TypeError('Invalid argument type');
+    throw new TypeError('Invalid argument type. Number argument expected');
   }
   return x ** n;
 }

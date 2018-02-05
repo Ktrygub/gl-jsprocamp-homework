@@ -80,7 +80,7 @@ function increase(value) {
 
 function testForSafeNumber(value) {
   if (typeof value !== 'number') {
-    throw new TypeError('Argument is not a number');
+    throw new TypeError('Invalid argument type. Number argument expected');
   }
   return Number.isFinite(value) ? 'safe' : 'danger';
 }
@@ -94,7 +94,7 @@ function testForSafeNumber(value) {
 
 function stringToArray(str) {
   if (typeof str !== 'string') {
-    throw new TypeError('Argument is not a string');
+    throw new TypeError('Invalid argument type. String argument expected');
   }
   return str.split(' ');
 }
@@ -107,7 +107,7 @@ function stringToArray(str) {
 function getStringPart(str) {
   // if (Object.prototype.toString.call(str) !== '[object String]') {
   if (typeof str !== 'string') {
-    throw new TypeError('Argument is not a string');
+    throw new TypeError('Invalid argument type. String argument expected');
   }
   return str.split(',')[0];
 }
@@ -120,7 +120,7 @@ function getStringPart(str) {
 
 function isSingleSymbolMatch(str, symbol) {
   if (typeof str !== 'string' || typeof symbol !== 'string') {
-    throw new TypeError('Argument is not a string');
+    throw new TypeError('Invalid argument type. String argument expected');
   }
 
   if (str.indexOf(symbol) !== -1 && str.indexOf(symbol) === str.lastIndexOf(symbol)) {
@@ -138,7 +138,7 @@ function isSingleSymbolMatch(str, symbol) {
 
 function join(array, separator = '-') {
   if (!Array.isArray(array)) {
-    throw new TypeError('Argument is not an Array');
+    throw new TypeError('Invalid argument type. Array argument expected');
   }
 
   return array.join(separator === '' ? '-' : separator);
@@ -155,7 +155,7 @@ function join(array, separator = '-') {
 
 function glue(arrA, arrB = []) {
   if (!Array.isArray(arrA) || !Array.isArray(arrB)) {
-    throw new TypeError('Argument i not an Array');
+    throw new TypeError('Invalid argument type. Array argument expected');
   }
 
   return [...arrA, ...arrB];
@@ -168,7 +168,7 @@ function glue(arrA, arrB = []) {
 
 function order(arr) {
   if (!Array.isArray(arr)) {
-    throw new TypeError('Argument is not an Array');
+    throw new TypeError('Invalid argument type. Array argument expected');
   }
 
   return arr.sort((a, b) => a < b);
@@ -186,7 +186,7 @@ function order(arr) {
 
 function removeNegative(arr) {
   if (!Array.isArray(arr)) {
-    throw new TypeError('Argument is not an Array');
+    throw new TypeError('Invalid argument type. Array argument expected');
   }
   return arr.filter(el => {
     if (typeof el === 'number') {
@@ -205,18 +205,18 @@ function removeNegative(arr) {
 
 function without(arrA, arrB = []) {
   if (!Array.isArray(arrA) || !Array.isArray(arrB)) {
-    throw new TypeError('Argument is not an Array');
+    throw new TypeError('Invalid argument type. Array argument expected');
   }
 
   arrA.forEach(el => {
     if (typeof el !== 'number') {
-      throw new TypeError('Array element is not a number');
+      throw new TypeError('Invalid argument type. Number argument expected');
     }
   });
 
   arrB.forEach(el => {
     if (typeof el !== 'number') {
-      throw new TypeError('Array element is not a number');
+      throw new TypeError('Invalid argument type. Number argument expected');
     }
   });
 
@@ -233,7 +233,7 @@ function without(arrA, arrB = []) {
 
 function calcExpression(expression) {
   if (typeof expression !== 'string') {
-    throw new TypeError('Argument is not a string');
+    throw new TypeError('Invalid argument type. String argument expected');
   }
   // with eval
 
@@ -319,7 +319,7 @@ function calcExpression(expression) {
 
 function calcComparison(expression) {
   if (typeof expression !== 'string') {
-    throw new TypeError('Argument is not a string');
+    throw new TypeError('Invalid argument type. String argument expected');
   }
   // with eval
   // const expr = expression
@@ -372,7 +372,7 @@ function calcComparison(expression) {
     if (/^(-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/.test(value)) {
       return Number(value);
     }
-    throw new TypeError('Invalid argument. Use valid numbers as arguments.');
+    throw new TypeError('Invalid argument type. Number argument expected.');
   };
 
   const [x, y] = expr.split(operator).map(el => filterFloat(el));
