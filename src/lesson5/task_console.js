@@ -6,11 +6,32 @@ function getRandomInt(frm, to) {
 
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+/* eslint-enable no-mixed-operators */
 
 function getRandomElement(array) {
   return array[getRandomInt(0, array.length - 1)];
 }
-/* eslint-enable no-mixed-operators */
+
+function colorLog(message, type) {
+  let color;
+  switch (type) {
+    case 'success':
+      color = 'Green';
+      break;
+    case 'info':
+      color = 'DodgerBlue';
+      break;
+    case 'error':
+      color = 'Red';
+      break;
+    case 'warning':
+      color = 'Orange';
+      break;
+    default:
+      color = 'black';
+  }
+  console.log(`%c${message}`, `color:${color}`);
+}
 
 // ---------------------------------------------------------------------------------------------------------
 const heroClasses = {
@@ -54,7 +75,6 @@ const statuses = {
 };
 const MAX_MONSTERS = 2;
 const DEATH_THRESHOLD_HP = 0;
-// ----------------------------------------------------------------------------------------------------------
 
 const Game = function Game(status = statuses.idle, hero, monsters = []) {
   this.status = status;
@@ -89,6 +109,7 @@ Character.prototype = {
     } else {
       throw new Error('Inalid target. Only Character object could be a target.');
     }
+
     return target.life > DEATH_THRESHOLD_HP
       ? `done ${this.damage} damage to ${target.getCharClass()}`
       : `${target.getCharClass()} killed`;
@@ -101,9 +122,14 @@ Hero.prototype = {
   },
   attack(target) {
     if (target instanceof Monster) {
-      return `Hero attacked, ${super.attack(target)}`;
+      const targetLifeBefore = target.life;
+      colorLog(`${this.getName().split(' ')[0]} attacked, ${super.attack(target)}`, 'info');
+      console.log();
+      colorLog(`${target.getCharClass()} HP: ${targetLifeBefore} -> ${target.life}`, 'info');
+      colorLog('----------------------------------------', 'info');
+      return;
     }
-    return 'I will attack only monsters';
+    console.log('I will attack only monsters');
   },
 };
 
@@ -112,13 +138,19 @@ Object.setPrototypeOf(Hero.prototype, Character.prototype);
 
 Monster.prototype = {
   getName() {
+    console.log(`I am ${this.getCharClass()} I don\`t have name`);
     return `I am ${this.getCharClass()} I don\`t have name`;
   },
   attack(target) {
     if (target instanceof Hero) {
-      return `Monster attacked, ${super.attack(target)}`;
+      const targetLifeBefore = target.life;
+      colorLog(`Monster attacked, ${super.attack(target)}`, 'info');
+      console.log();
+      colorLog(`${target.getName().split(' ')[0]} HP: ${targetLifeBefore} -> ${target.life}`, 'info');
+      colorLog('----------------------------------------', 'info');
+      return;
     }
-    return 'I will attack only Hero';
+    console.log('I will attack only Hero');
   },
 };
 
@@ -129,6 +161,10 @@ Game.prototype = {
   beginJourney() {
     if (this.hero && this.monsters.length === MAX_MONSTERS) {
       this.status = 'In progress';
+      console.log('');
+      colorLog('Your journey has started, fight monsters', 'success');
+      console.log('');
+      colorLog('----------------------------------------', 'info');
       return 'Your journey has started, fight monsters';
     }
     throw new Error('Cannot start journey, populate the world with hero and monsters first');
@@ -137,6 +173,9 @@ Game.prototype = {
   finishJourney() {
     if (this.hero.life <= DEATH_THRESHOLD_HP) {
       this.status = statuses.finished;
+      colorLog('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', 'error');
+      colorLog('The Game is finished. Hero is dead :(', 'error');
+      colorLog('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', 'error');
       return 'The Game is finished. Hero is dead :(';
     }
     if (
@@ -147,8 +186,12 @@ Game.prototype = {
       ) === 0
     ) {
       this.status = statuses.finished;
+      colorLog('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', 'success');
+      colorLog('The Game is finished. Monsters are dead. Congratulations', 'success');
+      colorLog('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', 'success');
       return 'The Game is finished. Monsters are dead. Congratulations';
     }
+    console.log('Don`t stop. Some monsters are still alive. Kill`em all');
     return 'Don`t stop. Some monsters are still alive. Kill`em all';
   },
 
@@ -158,6 +201,10 @@ Game.prototype = {
     }
     if (hero instanceof Hero) {
       this.hero = hero;
+      colorLog('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', 'success');
+      colorLog(`Hero created, welcome ${hero.getName()}`, 'success');
+      colorLog('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', 'success');
+      console.log('');
       return `Hero created, welcome ${hero.getName()}`;
     }
     throw new Error('Only hero instance can be hero');
@@ -169,6 +216,10 @@ Game.prototype = {
     }
     if (monster instanceof Monster) {
       this.monsters.push(monster);
+      colorLog(
+        `#${this.monsters.length} Monster Created, ${monster.getCharClass()} appeared in the world`,
+        'warning'
+      );
       return `Monster Created, ${monster.getCharClass()} appeared in the world`;
     }
     throw new Error('Only monster Instances can become monsters');
@@ -177,18 +228,23 @@ Game.prototype = {
     if (this.status !== statuses.progress) {
       throw new Error('Begin your journey to start fighting monsters');
     }
-
     const { hero, monsters } = this;
-
     const monster = monsters.find(monster => monster.life > DEATH_THRESHOLD_HP);
 
     while (true) {
       hero.attack(monster);
       if (monster.life === DEATH_THRESHOLD_HP) {
+        console.log('');
+        colorLog('****************Hero win****************', 'success');
+        console.log('');
         return 'Hero win';
       }
       monster.attack(hero);
       if (hero.life === DEATH_THRESHOLD_HP) {
+        console.log('');
+        colorLog('**************Monster win*************', 'error');
+        console.log('');
+
         return 'Monster win';
       }
     }
@@ -250,8 +306,8 @@ if (isHeroWon) {
 }
 /* End of your solution for Game Population mechanism */
 
-export default {
-  Game,
-  Hero,
-  Monster,
-};
+// export default {
+//   Game,
+//   Hero,
+//   Monster,
+// };
