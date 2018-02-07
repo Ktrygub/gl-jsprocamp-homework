@@ -393,16 +393,19 @@ function evalKey(obj, expression) {
   if (obj === null || typeof obj !== 'object' || typeof expression !== 'string') {
     throw new TypeError('Invalid arguments');
   }
-  if (!expression.startsWith('.')) {
-    throw new Error('Inalid access key.');
+
+  const expr = expression.replace(/ /g, '');
+
+  if (!expr.startsWith('.')) {
+    throw new Error('Invalid access key.');
   }
 
-  const accessKeys = expression.split('.').slice(1); // expression = '.a.x' accessKeys = [a', 'x']
+  const accessKeys = expr.split('.').slice(1); // expression = '.a.x' accessKeys = ['a', 'x']
 
   let result = obj;
   accessKeys.forEach(key => {
     if (!Object.prototype.hasOwnProperty.call(result, key)) {
-      throw new Error('Inalid access key.');
+      throw new Error('Invalid access key.');
     }
     result = result[key];
   });
