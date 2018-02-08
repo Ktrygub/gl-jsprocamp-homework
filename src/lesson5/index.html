@@ -49,17 +49,17 @@
         const heroClasses = {
             warrior: {
                 charClass: 'Warrior',
-                life: 30,
+                life: 60,
                 damage: 4,
             },
             rogue: {
                 charClass: 'Rogue',
-                life: 25,
+                life: 50,
                 damage: 3,
             },
             sorcerer: {
                 charClass: 'Sorcerer',
-                life: 20,
+                life: 40,
                 damage: 5,
             },
         };
@@ -85,7 +85,7 @@
             progress: 'In progress',
             finished: 'Finished',
         };
-        const MAX_MONSTERS = 2;
+        const MAX_MONSTERS = 4;
         const DEATH_THRESHOLD_HP = 0;
 
         const Game = function Game(status = statuses.idle, hero, monsters = []) {
