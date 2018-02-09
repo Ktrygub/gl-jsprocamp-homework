@@ -171,7 +171,31 @@ function order(arr) {
     throw new TypeError('Invalid argument type. Array argument expected');
   }
 
-  return arr.sort((a, b) => a < b);
+  const arrayOfStrings = [];
+  const arrayOfNumbers = [];
+
+  // can add logic for other types inside switch statement
+  arr.forEach(el => {
+    switch (typeof el) {
+      case 'number':
+        arrayOfNumbers.push(el);
+        break;
+      case 'string':
+        arrayOfStrings.push(el);
+        break;
+      default:
+        throw new Error('Order function accepts only array of numbers and strings.');
+    }
+  });
+
+  arrayOfNumbers.sort((a, b) => {
+    if (Number.isNaN(a)) return 1;
+    if (Number.isNaN(b)) return -1;
+    return b - a;
+  });
+  arrayOfStrings.sort().reverse();
+
+  return [...arrayOfStrings, ...arrayOfNumbers];
 }
 
 /*
