@@ -189,8 +189,11 @@ function order(arr) {
   });
 
   arrayOfNumbers.sort((a, b) => {
+
+    if (Number.isNaN(a) && Number.isNaN(b)) return 0;
     if (Number.isNaN(a)) return 1;
     if (Number.isNaN(b)) return -1;
+
     return b - a;
   });
   arrayOfStrings.sort().reverse();
