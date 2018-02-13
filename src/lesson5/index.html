@@ -243,7 +243,24 @@
                 const { hero, monsters } = this;
                 const monster = monsters.find(monster => monster.life > DEATH_THRESHOLD_HP);
 
-                while (true) {
+                // while (true) {
+                //     hero.attack(monster);
+                //     if (monster.life === DEATH_THRESHOLD_HP) {
+                //         console.log('');
+                //         colorLog('****************Hero win****************', 'success');
+                //         console.log('');
+                //         return 'Hero win';
+                //     }
+                //     monster.attack(hero);
+                //     if (hero.life === DEATH_THRESHOLD_HP) {
+                //         console.log('');
+                //         colorLog('**************Monster win*************', 'error');
+                //         console.log('');
+
+                //         return 'Monster win';
+                //     }
+                // }
+                while (hero.life > DEATH_THRESHOLD_HP) {
                     hero.attack(monster);
                     if (monster.life === DEATH_THRESHOLD_HP) {
                         console.log('');
@@ -252,14 +269,11 @@
                         return 'Hero win';
                     }
                     monster.attack(hero);
-                    if (hero.life === DEATH_THRESHOLD_HP) {
-                        console.log('');
-                        colorLog('**************Monster win*************', 'error');
-                        console.log('');
-
-                        return 'Monster win';
-                    }
                 }
+                console.log('');
+                colorLog('**************Monster win*************', 'error');
+                console.log('');
+                return 'Monster win';
             },
         };
 

@@ -1,32 +1,29 @@
+import Character from './classes/Character';
 import Hero from './classes/Hero';
 import Monster from './classes/Monster';
 import Game from './classes/Game';
-import {
-  MAX_MONSTERS,
-  DEATH_THRESHOLD_HP,
-  monsterClasses,
-  heroClasses,
-  heroesList,
-  statuses,
-} from './constants';
+import { HEROES_LIST } from './constants';
 import { getRandomElement } from './helpers';
 
 /* Game Population mechanism should go below */
+const heroHame = getRandomElement(HEROES_LIST);
+const heroClass = getRandomElement(Object.keys(Hero.CLASSES));
 
-const hero = new Hero(getRandomElement(heroesList), getRandomElement(Object.keys(heroClasses)));
+const hero = new Hero(heroHame, heroClass);
 
 const monsters = [];
-for (let i = 0; i < MAX_MONSTERS; i += 1) {
-  monsters.push(new Monster(getRandomElement(Object.keys(monsterClasses))));
+for (let i = 0; i < Game.MAX_MONSTERS; i += 1) {
+  const monsterClass = getRandomElement(Object.keys(Monster.CLASSES));
+  monsters.push(new Monster(monsterClass));
 }
 
-const game = new Game(statuses.idle, hero, monsters);
+const game = new Game(Game.STATUSES.idle, hero, monsters);
 
 game.beginJourney();
 
 let isHeroWon = true;
-for (let i = 0; i < MAX_MONSTERS; i += 1) {
-  if (game.hero.life > DEATH_THRESHOLD_HP) {
+for (let i = 0; i < Game.MAX_MONSTERS; i += 1) {
+  if (game.hero.life > Character.DEATH_THRESHOLD_HP) {
     game.fight();
   } else {
     isHeroWon = false;

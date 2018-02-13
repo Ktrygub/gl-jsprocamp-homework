@@ -1,9 +1,26 @@
-import { monsterClasses } from '../constants';
 import Character from './Character';
 import Hero from './Hero';
 
 const Monster = function Monster(charClass) {
-  Character.call(this, monsterClasses, charClass);
+  Character.call(this, Monster.CLASSES, charClass);
+};
+
+Monster.CLASSES = {
+  zombie: {
+    charClass: 'Zombie',
+    life: 8,
+    damage: 4,
+  },
+  skeleton: {
+    charClass: 'Skeleton',
+    life: 10,
+    damage: 6,
+  },
+  holem: {
+    charClass: 'Holem',
+    life: 15,
+    damage: 6,
+  },
 };
 
 Monster.prototype = {
@@ -19,6 +36,5 @@ Monster.prototype = {
 };
 
 Object.setPrototypeOf(Monster.prototype, Character.prototype);
-// now Monster.prototype.__proto__ === Character.prototype
 
 export default Monster;

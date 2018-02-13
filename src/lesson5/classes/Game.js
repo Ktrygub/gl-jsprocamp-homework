@@ -1,16 +1,23 @@
-import { statuses, DEATH_THRESHOLD_HP, MAX_MONSTERS } from '../constants';
 import Hero from './Hero';
 import Monster from './Monster';
+import Character from './Character';
 
-const Game = function Game(status = statuses.idle, hero, monsters = []) {
+const Game = function Game(status = Game.STATUSES.idle, hero, monsters = []) {
   this.status = status;
   this.hero = hero;
   this.monsters = monsters;
 };
 
+Game.MAX_MONSTERS = 2;
+Game.STATUSES = {
+  idle: 'Idle',
+  progress: 'In progress',
+  finished: 'Finished',
+};
+
 Game.prototype = {
   beginJourney() {
-    if (this.hero && this.monsters.length === MAX_MONSTERS) {
+    if (this.hero && this.monsters.length === Game.MAX_MONSTERS) {
       this.status = 'In progress';
       return 'Your journey has started, fight monsters';
     }
@@ -18,21 +25,15 @@ Game.prototype = {
   },
 
   finishJourney() {
-    if (this.hero.life <= DEATH_THRESHOLD_HP) {
-      this.status = statuses.finished;
+    if (this.hero.life <= Character.DEATH_THRESHOLD_HP) {
+      this.status = Game.STATUSES.finished;
       return 'The Game is finished. Hero is dead :(';
     }
-    if (
-      this.monsters.reduce(
-        (countOfAliveMonsters, monster) =>
-          (monster.life > DEATH_THRESHOLD_HP ? countOfAliveMonsters + 1 : countOfAliveMonsters),
-        0
-      ) === 0
-    ) {
-      this.status = statuses.finished;
-      return 'The Game is finished. Monsters are dead. Congratulations';
+    if (this.monsters.some(monster => monster.life > Character.DEATH_THRESHOLD_HP)) {
+      return 'Don`t stop. Some monsters are still alive. Kill`em all';
     }
-    return 'Don`t stop. Some monsters are still alive. Kill`em all';
+    this.status = Game.STATUSES.finished;
+    return 'The Game is finished. Monsters are dead. Congratulations';
   },
 
   addHero(hero) {
@@ -47,8 +48,8 @@ Game.prototype = {
   },
 
   addMonster(monster) {
-    if (this.monsters.length === MAX_MONSTERS) {
-      throw new Error(`Only ${MAX_MONSTERS} monsters can exist`);
+    if (this.monsters.length === Game.MAX_MONSTERS) {
+      throw new Error(`Only ${Game.MAX_MONSTERS} monsters can exist`);
     }
     if (monster instanceof Monster) {
       this.monsters.push(monster);
@@ -57,24 +58,26 @@ Game.prototype = {
     throw new Error('Only monster Instances can become monsters');
   },
   fight() {
-    if (this.status !== statuses.progress) {
+    if (this.status !== Game.STATUSES.progress) {
       throw new Error('Begin your journey to start fighting monsters');
     }
 
     const { hero, monsters } = this;
 
-    const monster = monsters.find(monster => monster.life > DEATH_THRESHOLD_HP);
+    const monster = monsters.find(monster => monster.life > Character.DEATH_THRESHOLD_HP);
 
-    while (true) {
+    if (!monster) {
+      throw new Error('No alive monsters found. Time to finish your journey.');
+    }
+
+    while (hero.life > Character.DEATH_THRESHOLD_HP) {
       hero.attack(monster);
-      if (monster.life === DEATH_THRESHOLD_HP) {
+      if (monster.life === Character.DEATH_THRESHOLD_HP) {
         return 'Hero win';
       }
       monster.attack(hero);
-      if (hero.life === DEATH_THRESHOLD_HP) {
-        return 'Monster win';
-      }
     }
+    return 'Monster win';
   },
 };
 

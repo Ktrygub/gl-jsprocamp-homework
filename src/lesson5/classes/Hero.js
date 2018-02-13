@@ -1,16 +1,30 @@
-import { heroClasses } from '../constants';
 import Character from './Character';
 import Monster from './Monster';
 
 const Hero = function Hero(name, charClass) {
-  Character.call(this, heroClasses, charClass);
+  Character.call(this, Hero.CLASSES, charClass);
   this.name = name;
 };
 
-Hero.prototype = {
-  getName() {
-    return this.name;
+Hero.CLASSES = {
+  warrior: {
+    charClass: 'Warrior',
+    life: 30,
+    damage: 4,
   },
+  rogue: {
+    charClass: 'Rogue',
+    life: 25,
+    damage: 3,
+  },
+  sorcerer: {
+    charClass: 'Sorcerer',
+    life: 20,
+    damage: 5,
+  },
+};
+
+Hero.prototype = {
   attack(target) {
     if (target instanceof Monster) {
       return `Hero attacked, ${super.attack(target)}`;
@@ -20,6 +34,5 @@ Hero.prototype = {
 };
 
 Object.setPrototypeOf(Hero.prototype, Character.prototype);
-// now Hero.prototype.__proto__ === Character.prototype
 
 export default Hero;
